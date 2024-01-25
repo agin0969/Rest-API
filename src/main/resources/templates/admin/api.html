@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="admin/frame/head :: head">
+
+</head>
+<body>
+	<div th:replace="admin/frame/header :: header"></div>
+	
+
+	<h1>User List</h1>
+
+
+	<table>
+		<thead>
+			<tr>
+				<th>Username</th>
+			</tr>
+		</thead>
+		<tbody>
+			<!-- Iterate over the list of users and display each username -->
+			<tr th:each="user : ${users}">
+				<td th:text="${user.username}"></td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>
