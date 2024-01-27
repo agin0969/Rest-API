@@ -1,12 +1,15 @@
 <!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="frame/head :: head">
+
 </head>
 <body>
+	<div th:replace="frame/header :: header"></div>
 
-<p> loi roi</p>
+	<h1 th:if="${userName}">
+		Hello, <span th:text="${userName}"></span>!
+	</h1>
+	
 
 </body>
 </html>

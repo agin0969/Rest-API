@@ -14,10 +14,15 @@ public class homeController {
 	public String gohome() {
 		return "index";
 	}
+	@GetMapping("/signup")
+	public String signUp() {
+		return "signInUp/signup";
+	}
 	@GetMapping("/signin")
 	public String signIn() {
-		return "signInUp/signIn";
+		return "signInUp/signin";
 	}
+	
 	
 	
 

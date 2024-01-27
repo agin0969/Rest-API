@@ -2,7 +2,10 @@ package com.thing.services;
 
 import java.util.List;
 
+import javax.naming.NameNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.thing.models.User;
@@ -20,8 +23,8 @@ public class UserService {
 		return userRepository.findAll();
 		
 	}
-	public User getUserById(int id){
-		User finduser=userRepository.findById(id).orElse(null);
+	public User getUserById(int id) throws NameNotFoundException{
+		User finduser=userRepository.findById(id).orElseThrow(()->new NameNotFoundException("id not found"));
 		return finduser;
 	}
 	public User getUserByUsername(String username){

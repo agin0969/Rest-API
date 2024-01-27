@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="frame/head :: head">
+
+</head>
+<body class=" d-flex align-items-center justify-content-center"
+	style="height: 100vh;">
+
+	<div class="container" style="max-width: 450px;">
+
+		<h2 class="text-center mb-4">Login</h2>
+
+		<form th:action="@{/signin}">
+			<div class="mb-3">
+				<label for="username" class="form-label">Username:</label> <input
+					type="text" class="form-control" id="username" name="username"
+					required>
+			</div>
+			<div class="mb-3">
+				<label for="password" class="form-label">Password:</label> <input
+					type="password" class="form-control" id="password" name="password"
+					required>
+			</div>
+			<button type="submit" class="btn btn-primary w-100">Login</button>
+			<small class="text-body-secondary">Have an account? <a
+				th:href="@{/signup}">Click to sign up</a></small>
+		</form>
+
+	</div>
+</body>
+</html>
