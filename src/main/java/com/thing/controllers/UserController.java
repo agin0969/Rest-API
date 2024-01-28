@@ -45,12 +45,14 @@ public class UserController {
 	@PostMapping("/process_register")
 	public String signUp(@ModelAttribute("user") User user, RedirectAttributes redirectAttributes) {
 		String error = "tai khoan da co nguoi su dung";
+		String error1 = "dang ki thanh cong";
 		String username = user.getUsername();
 		String password = user.getPassword();
 		if (userService.getUserByUsername(username) == null && username != "" && password != "") {
 			user.setPassword(passwordEncoder.encode(password));
 			userService.saveUser(user);
-			return "redirect:/user/index";
+			redirectAttributes.addFlashAttribute("error1", error1);
+			return "redirect:/register";
 
 //			PasswordEncoder passwordEnocder = new BCryptPasswordEncoder();
 //			if (passwordEncoder.matches(rawPassword, encodedPassword)) {

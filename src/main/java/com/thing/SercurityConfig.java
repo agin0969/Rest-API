@@ -9,6 +9,7 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
@@ -50,8 +51,9 @@ public class SercurityConfig   {
         http 
         	.authorizeHttpRequests(auth -> auth
         			.requestMatchers("/","/register").permitAll()
+        			
         			.requestMatchers("/admin/api").hasAuthority("USER")
-        			.anyRequest().hasAuthority("USER")
+        			.anyRequest().authenticated()
         			)
         			.formLogin(formLogin -> formLogin
         					.loginPage("/signin")
@@ -65,6 +67,7 @@ public class SercurityConfig   {
         			
         return http.build();
     }
+	
 	
 	
 	

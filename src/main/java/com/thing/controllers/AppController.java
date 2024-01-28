@@ -20,7 +20,7 @@ public class AppController {
 		return "index";
 	}
 	@GetMapping("/register")
-	public String regiater() {
+	public String register() {
 		return "signInUp/signup";
 	}
 	@GetMapping("/signin")

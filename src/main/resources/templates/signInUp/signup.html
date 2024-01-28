@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="frame/head :: head">
-
+    
 </head>
+
 <body class=" d-flex align-items-center justify-content-center"
 	style="height: 100vh;">
 
@@ -20,7 +21,7 @@
 			<div class="mb-3">
 				<label for="password" class="form-label">Password:</label> <input
 					type="password" class="form-control" id="password" name="password"
-					required>
+					 required>
 			</div>
 
 			<button type="submit" class="btn btn-primary w-100">Sign Up</button>
@@ -33,8 +34,23 @@
 				<button type="button" class="btn-close" data-bs-dismiss="alert"
 					aria-label="Close"></button>
 			</div>
+			<div th:if="${error1}"
+				class="alert alert-warning alert-dismissible fade show" role="alert">
+				<p th:text="${error1}"></p>
+				<button type="button" class="btn-close" data-bs-dismiss="alert"
+					aria-label="Close"></button>
+			</div>
 
 		</form>
+		<div id="message">
+			<h3>Password must contain the following:</h3>
+			<p id="letter" class="invalid">A <b>lowercase</b> letter</p>
+			<p id="capital" class="invalid">A <b>capital (uppercase)</b> letter</p>
+			<p id="number" class="invalid">A <b>number</b></p>
+			<p id="length" class="invalid">Minimum <b>8 characters</b></p>
+		  </div>
+
+		
 
 	</div>
 </body>
