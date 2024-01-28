@@ -18,6 +18,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 
 import com.thing.models.CustomUserDetails;
 import com.thing.services.CustomUserDetailService;
@@ -51,7 +52,7 @@ public class SercurityConfig   {
         http 
         	.authorizeHttpRequests(auth -> auth
         			.requestMatchers("/","/register").permitAll()
-        			
+        			.requestMatchers("/resources/**").permitAll()
         			.requestMatchers("/admin/api").hasAuthority("USER")
         			.anyRequest().authenticated()
         			)
@@ -67,6 +68,7 @@ public class SercurityConfig   {
         			
         return http.build();
     }
+	
 	
 	
 	
