@@ -4,9 +4,12 @@ import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.naming.AuthenticationException;
 import javax.naming.NameNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -29,6 +32,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class UserController {
 	private UserService userService;
 	private PasswordEncoder passwordEncoder;
+	private AuthenticationManager authenticationManager;
 
 	@Autowired
 	public UserController(UserService userService, PasswordEncoder passwordEncoder) {
@@ -36,15 +40,9 @@ public class UserController {
 		this.passwordEncoder = passwordEncoder;
 	}
 
-	@GetMapping("/admin")
-	public String getUser(Model model) {
-		List<User> users = userService.getUsers();
-		model.addAttribute("users", users);
-		return "admin/api";
+	
 
-	}
-
-	@PostMapping("/signup")
+	@PostMapping("/process_register")
 	public String signUp(@ModelAttribute("user") User user, RedirectAttributes redirectAttributes) {
 		String error = "tai khoan da co nguoi su dung";
 		String username = user.getUsername();
@@ -52,7 +50,7 @@ public class UserController {
 		if (userService.getUserByUsername(username) == null && username != "" && password != "") {
 			user.setPassword(passwordEncoder.encode(password));
 			userService.saveUser(user);
-			return "redirect:/";
+			return "redirect:/user/index";
 
 //			PasswordEncoder passwordEnocder = new BCryptPasswordEncoder();
 //			if (passwordEncoder.matches(rawPassword, encodedPassword)) {
@@ -60,27 +58,23 @@ public class UserController {
 //			}
 		} else {
 			redirectAttributes.addFlashAttribute("error", error);
-			return "redirect:/signup";
+			return "redirect:/register";
 		}
 
 	}
-
+	@GetMapping("/admin/api")
+	public String adminApi(Model model) {
+		List<User> list= userService.getUsers();
+		model.addAllAttributes(list);
+		return "admin/api";
+	}
 	@GetMapping("/admin/error")
-	public String checkSession(Model model) {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-		if (authentication.isAuthenticated()) {
-			String userNameString = authentication.getName();
-			model.addAttribute("userName", userNameString);
-			return "admin/error";
-		}
-		else {
-			
-			return "signInUp/signin";
-		}
-		
-
-		
+	public String adminApi() {
+	
+		return "admin/error";
 	}
+	
+	
+
 
 }

@@ -1,6 +1,7 @@
 package com.thing.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.naming.NameNotFoundException;
 
@@ -13,7 +14,8 @@ import com.thing.repositories.UserRepository;
 
 @Service
 public class UserService {
-	private final UserRepository userRepository;
+	@Autowired
+	private  UserRepository userRepository;
 	
 	@Autowired
 	public UserService(UserRepository userRepository) {
@@ -23,10 +25,12 @@ public class UserService {
 		return userRepository.findAll();
 		
 	}
-	public User getUserById(int id) throws NameNotFoundException{
-		User finduser=userRepository.findById(id).orElseThrow(()->new NameNotFoundException("id not found"));
-		return finduser;
+	public Optional<User> getUserById(int id) {
+		Optional<User> usOptional =userRepository.findById(id);
+		return usOptional ;
+		
 	}
+	
 	public User getUserByUsername(String username){
 		User finduser=userRepository.findByUsername(username);
 		return finduser;
