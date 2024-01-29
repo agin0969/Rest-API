@@ -39,10 +39,18 @@ public class UserController {
 		this.userService = userService;
 		this.passwordEncoder = passwordEncoder;
 	}
+	@GetMapping("/account/register")
+	public String register() {
+		return "signInUp/signup";
+	}
+	@GetMapping("/account/signin")
+	public String signIn() {
+		return "signInUp/signin";
+	}
 
 	
 
-	@PostMapping("/process_register")
+	@PostMapping("/account/process_register")
 	public String signUp(@ModelAttribute("user") User user, RedirectAttributes redirectAttributes) {
 		String error = "tai khoan da co nguoi su dung";
 		String error1 = "dang ki thanh cong";
@@ -52,7 +60,7 @@ public class UserController {
 			user.setPassword(passwordEncoder.encode(password));
 			userService.saveUser(user);
 			redirectAttributes.addFlashAttribute("error1", error1);
-			return "redirect:/register";
+			return "redirect:/home";
 
 //			PasswordEncoder passwordEnocder = new BCryptPasswordEncoder();
 //			if (passwordEncoder.matches(rawPassword, encodedPassword)) {
@@ -60,21 +68,11 @@ public class UserController {
 //			}
 		} else {
 			redirectAttributes.addFlashAttribute("error", error);
-			return "redirect:/register";
+			return "redirect:/account/register";
 		}
 
 	}
-	@GetMapping("/admin/api")
-	public String adminApi(Model model) {
-		List<User> list= userService.getUsers();
-		model.addAllAttributes(list);
-		return "admin/api";
-	}
-	@GetMapping("/admin/error")
-	public String adminApi() {
-	
-		return "admin/error";
-	}
+
 	
 	
 

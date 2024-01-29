@@ -51,16 +51,16 @@ public class SercurityConfig   {
 		http.authenticationProvider(authenticationProvider());
         http 
         	.authorizeHttpRequests(auth -> auth
-        			.requestMatchers("/","/register").permitAll()
-        			.requestMatchers("/resources/**").permitAll()
+        			.requestMatchers("/home","/account/**").permitAll()
+        			.requestMatchers("/resources/static/**").permitAll()
         			.requestMatchers("/admin/api").hasAuthority("USER")
         			.anyRequest().authenticated()
         			)
         			.formLogin(formLogin -> formLogin
-        					.loginPage("/signin")
+        					.loginPage("/account/signin")
         					
         				.usernameParameter("username")
-        				.defaultSuccessUrl("/admin/api")
+        				.defaultSuccessUrl("/home")
         				.permitAll()
         					
         				 	

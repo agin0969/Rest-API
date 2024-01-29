@@ -19,14 +19,10 @@ public class AppController {
 	public String goHome() {
 		return "index";
 	}
-	@GetMapping("/register")
-	public String register() {
-		return "signInUp/signup";
+	@GetMapping("/admin/api")
+	public String getMethodName() {
+		return "admin/api";
 	}
-	@GetMapping("/signin")
-	public String signIn() {
-		return "signInUp/signin";
-	}
-
+	
 
 }
