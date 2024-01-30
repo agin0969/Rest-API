@@ -1,15 +1,40 @@
 .btn {
-	background-color: rgb(225, 65, 11);
+	background-color: rgb(197, 56, 10);
 	color: #f1f1f1;
 	font-weight: bold;
 	
 }
 
 .btn:hover {
-	background-color: rgb(245, 108, 63);
+	background-color:rgb(207, 60, 10);
 	color: #ffffff;
 }
 h2 {
 	font-weight: bolder;
 	font-size: 50px;
+	color:   rgb(197, 56, 10);
 }
+body {
+	background: #404040;
+	
+}
+.form-a{
+	text-decoration: none;
+	color:  rgb(197, 56, 10);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

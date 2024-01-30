@@ -16,6 +16,7 @@
 	crossorigin="anonymous"></script>
 
 <link th:href="@{/css/regexRegister.css}" rel="stylesheet">
+<script type="text/javascript" th:src="@{/js/regexRegister.js}"></script>
 
 </head>
 
@@ -30,26 +31,34 @@
 
 			<div class="mb-4">
 				<input type="text" class="form-control" id="username"
-					name="username" patern="(?=.*\d){5,}" placeholder="User name"
-					required>
+					name="username" pattern=".{5,}" placeholder="Username"
+					onclick="showAlert('usernamePattern')" required>
+			</div>
+			
+			<div class="alert alert-warning alert-dismissible fade show"
+				role="alert" id="usernamePattern" style="display: none;">
+				User must have minimum 5 char.
+
+				<button id="btn-alert" type="button" class="btn-close" data-bs-dismiss="alert"
+					aria-label="Close"></button>
 			</div>
 			<div class="mb-4">
 				<input type="password" class="form-control" id="password"
 					name="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
-					onclick="showAlert()" placeholder="Password" plarequired>
+					onclick="showAlert('passwordPattern')" placeholder="Password" plarequired>
 			</div>
 
 			<div class="alert alert-warning alert-dismissible fade show"
 				role="alert" id="passwordPattern" style="display: none;">
 				Password Must Have lowerkey, uppercase, number, minimum 8 char.
 
-				<button type="button" class="btn-close" data-bs-dismiss="alert"
-					aria-label="Close"></button>
+				<button id="btn-alert" type="button" class="btn-close" data-bs-dismiss="alert"
+					aria-label="Close" onclick="hideAlert()"></button>
 			</div>
 
 
-			<button type="submit" class="btn w-100">Sign Up</button>
-			<small class="text-body-secondary">Have an account? <a
+			<button type="submit" class="btn w-100 mb-3">Sign Up</button>
+			<small class="text-body-secondary" style="color: rgb(197, 56, 10) !important" >Have an account? <a class="form-a"
 				th:href="@{/account/signin}">Click to sign in</a></small>
 
 			<div th:if="${error}"
