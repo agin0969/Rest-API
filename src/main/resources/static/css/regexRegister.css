@@ -1,6 +1,15 @@
-.btn-primary {
-	background-color: rgb(51, 40, 125);
+.btn {
+	background-color: rgb(225, 65, 11);
+	color: #f1f1f1;
+	font-weight: bold;
+	
 }
-.btn-primary:hover {
-	background-color: rgb(89, 73, 194);
+
+.btn:hover {
+	background-color: rgb(245, 108, 63);
+	color: #ffffff;
+}
+h2 {
+	font-weight: bolder;
+	font-size: 50px;
 }

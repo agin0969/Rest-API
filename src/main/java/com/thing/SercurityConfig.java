@@ -18,6 +18,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 
 import com.thing.models.CustomUserDetails;
@@ -52,9 +54,9 @@ public class SercurityConfig   {
         http 
         	.authorizeHttpRequests(auth -> auth
         			.requestMatchers("/home","/account/**").permitAll()
-        			.requestMatchers("/resources/static/**").permitAll()
+        			.requestMatchers("/resources/**").permitAll()
         			.requestMatchers("/admin/api").hasAuthority("USER")
-        			.anyRequest().authenticated()
+        			.anyRequest().permitAll()
         			)
         			.formLogin(formLogin -> formLogin
         					.loginPage("/account/signin")
@@ -69,8 +71,5 @@ public class SercurityConfig   {
         return http.build();
     }
 	
-	
-	
-	
-	
+
 }
