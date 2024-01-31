@@ -15,15 +15,14 @@ import jakarta.persistence.Tuple;
 
 public class CustomUserDetails implements UserDetails {
 	private User user;
-	private String role ;
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		Set<String> roles = new HashSet<String>();
-		roles.add(user.getRole());
+		String role;
+		role=user.getRole();
 		List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-		 for (String role: roles) {
-			 authorities.add(new SimpleGrantedAuthority(role));
-		 }
+	
+		authorities.add(new SimpleGrantedAuthority(role));
+		
 		return authorities;
 	}
 	

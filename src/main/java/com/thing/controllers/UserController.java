@@ -8,6 +8,8 @@ import javax.naming.AuthenticationException;
 import javax.naming.NameNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -44,8 +46,16 @@ public class UserController {
 		return "signInUp/signup";
 	}
 	@GetMapping("/account/signin")
-	public String signIn() {
+	public String signin() {
 		return "signInUp/signin";
+	}
+	@PostMapping("/account/signin")
+	public ResponseEntity<String> authenticateUser(@RequestBody User user) {
+		Authentication authentication= authenticationManager.authenticate(
+				new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword())
+				);
+		SecurityContextHolder.getContext().setAuthentication(authentication);
+		return new ResponseEntity<>("sign in success", HttpStatus.OK);
 	}
 
 	
@@ -61,11 +71,6 @@ public class UserController {
 			userService.saveUser(user);
 			redirectAttributes.addFlashAttribute("error1", error1);
 			return "redirect:/home";
-
-//			PasswordEncoder passwordEnocder = new BCryptPasswordEncoder();
-//			if (passwordEncoder.matches(rawPassword, encodedPassword)) {
-//			    System.out.println("Matched!");
-//			}
 		} else {
 			redirectAttributes.addFlashAttribute("error", error);
 			return "redirect:/account/register";

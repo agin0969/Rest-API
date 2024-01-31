@@ -18,46 +18,55 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 
 import com.thing.models.CustomUserDetails;
-import com.thing.services.CustomUserDetailService;
+import com.thing.services.CustomAccessDeniedHandler;
 import com.thing.services.CustomerUserDetailService;
 
 @Configuration
 @EnableWebSecurity
 public class SercurityConfig   {
 	@Bean
+	AccessDeniedHandler cusAccessDeniedHandler() {
+		return new CustomAccessDeniedHandler();
+		
+	}
+	@Bean
 	UserDetailsService userDetailsService() {
 		return new CustomerUserDetailService();
 	}
 	
 	@Bean
-	public PasswordEncoder passwordEncoder() {
+	 PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
 	
 	 @Bean
-	    public DaoAuthenticationProvider authenticationProvider() {
+	     DaoAuthenticationProvider authenticationProvider() {
 	        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
 	        authProvider.setUserDetailsService(userDetailsService());
 	        authProvider.setPasswordEncoder(passwordEncoder());
 	         
 	        return authProvider;
 	    }
+	 
 	
 	@Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.authenticationProvider(authenticationProvider());
         http 
         	.authorizeHttpRequests(auth -> auth
         			.requestMatchers("/home","/account/**").permitAll()
         			.requestMatchers("/resources/**").permitAll()
-        			.requestMatchers("/admin/api").hasAuthority("USER")
+        			.requestMatchers("/admin/api").hasAuthority("ADMIN")
         			.anyRequest().permitAll()
         			)
+        			.exceptionHandling(customizer ->
+        			customizer.accessDeniedHandler(cusAccessDeniedHandler()))
         			.formLogin(formLogin -> formLogin
         					.loginPage("/account/signin")
         					
