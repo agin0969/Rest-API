@@ -3,6 +3,7 @@ package com.thing.controllers;
 import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import javax.naming.AuthenticationException;
 import javax.naming.NameNotFoundException;
@@ -37,20 +38,27 @@ public class UserController {
 	private AuthenticationManager authenticationManager;
 
 	@Autowired
-	public UserController(UserService userService, PasswordEncoder passwordEncoder) {
+	public UserController(UserService userService, PasswordEncoder passwordEncoder,
+			AuthenticationManager authenticationManager) {
+		super();
 		this.userService = userService;
 		this.passwordEncoder = passwordEncoder;
+		this.authenticationManager = authenticationManager;
 	}
+	
 	@GetMapping("/account/register")
-	public String register() {
+	public String register(Model model) {
+		model.addAttribute("user", new User());
 		return "signInUp/signup";
 	}
+
 	@GetMapping("/account/signin")
-	public String signin() {
+	public String signin(Model model) {
+		model.addAttribute("user", new User());
 		return "signInUp/signin";
 	}
 	@PostMapping("/account/signin")
-	public ResponseEntity<String> authenticateUser(@RequestBody User user) {
+	public ResponseEntity<String> authenticateUser(User user) {
 		Authentication authentication= authenticationManager.authenticate(
 				new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword())
 				);
@@ -61,12 +69,12 @@ public class UserController {
 	
 
 	@PostMapping("/account/process_register")
-	public String signUp(@ModelAttribute("user") User user, RedirectAttributes redirectAttributes) {
+	public String signUp( User user, RedirectAttributes redirectAttributes) {
 		String error = "tai khoan da co nguoi su dung";
 		String error1 = "dang ki thanh cong";
 		String username = user.getUsername();
 		String password = user.getPassword();
-		if (userService.getUserByUsername(username) == null && username != "" && password != "") {
+		if (userService.getUserByUsername(user.getUsername()) == null && username != "" && password != "") {
 			user.setPassword(passwordEncoder.encode(password));
 			userService.saveUser(user);
 			redirectAttributes.addFlashAttribute("error1", error1);
@@ -75,11 +83,8 @@ public class UserController {
 			redirectAttributes.addFlashAttribute("error", error);
 			return "redirect:/account/register";
 		}
-
 	}
 
 	
-	
-
 
 }
