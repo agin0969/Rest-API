@@ -32,8 +32,7 @@ public class CustomUserDetails implements UserDetails {
 		this.user = user;
 	
 	}
-
-
+	
 	@Override
 	public String getPassword() {
 		// TODO Auto-generated method stub

@@ -17,11 +17,16 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
 import com.thing.models.User;
 import com.thing.services.UserService;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -57,6 +62,11 @@ public class UserController {
 		model.addAttribute("user", new User());
 		return "signInUp/signin";
 	}
+	@GetMapping("/account/register-success")
+	public String register_success() {
+		
+		return "signInUp/registerSuccessful";
+	}
 	@PostMapping("/account/signin")
 	public ResponseEntity<String> authenticateUser(User user) {
 		Authentication authentication= authenticationManager.authenticate(
@@ -78,13 +88,16 @@ public class UserController {
 			user.setPassword(passwordEncoder.encode(password));
 			userService.saveUser(user);
 			redirectAttributes.addFlashAttribute("error1", error1);
-			return "redirect:/home";
+			
+			return "redirect:/account/register-success";
 		} else {
 			redirectAttributes.addFlashAttribute("error", error);
 			return "redirect:/account/register";
 		}
 	}
-
-	
-
+	@PostMapping("/account/logout")
+	public String logOut(Authentication authentication, HttpServletRequest request, HttpServletResponse response) {
+		new SecurityContextLogoutHandler().logout(request, response, authentication);
+		return "index";
+	}
 }

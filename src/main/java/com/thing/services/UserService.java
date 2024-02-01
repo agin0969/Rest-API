@@ -6,6 +6,9 @@ import java.util.Optional;
 import javax.naming.NameNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -38,4 +41,14 @@ public class UserService {
 	public User saveUser(User user) {
 		return userRepository.save(user);
 	}
+	public User getCurrentUser() {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication.isAuthenticated() && authentication.getPrincipal() instanceof UserDetails) {
+			UserDetails userDetails =(UserDetails) authentication.getPrincipal();
+			return new User(userDetails.getUsername(),userDetails.getPassword());
+		} else {
+			return null;
+		}
+	}
+	
 }

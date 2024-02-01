@@ -3,12 +3,12 @@
 }
 
 .navbar a {
-	color: #da480a !important;
+	color: #e7e7e7 ;
 	font-weight: bold;
 }
 
 .navbar ul li a:hover {
-	color: #e7e7e7 !important;
+	color: #da480a !important;
 }
 
 .navbar ul li {
@@ -42,12 +42,39 @@
 	outline-color: #da480a;
 	cursor: pointer;
 }
+
 .brand-text {
-  font-size: 32px;
-  margin-left: 8px; 
- 
+	font-size: 32px;
+	margin-left: 8px;
 }
+
 .logo-header {
-  display: flex; 
-  align-items: center; 
+	display: flex;
+	align-items: center;
 }
+
+.btn-user {
+	background-color:  #1d1d1d;
+	position: absolute;
+	right: 80px;
+	top: 10px;
+}
+.btn-user ul {
+	background-color:  #1d1d1d !important;
+	
+}
+.btn-user li a {
+	font-size: 12px;
+	font-weight: normal;
+}
+.btn-user li a:hover {
+	background-color: #41453f;
+}
+.logout-btn {
+ 	color: #e7e7e7;
+}
+.logout-btn:hover {
+	color: #da480a;
+ 	background-color: #41453f;
+}
+

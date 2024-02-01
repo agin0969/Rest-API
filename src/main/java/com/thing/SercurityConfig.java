@@ -20,6 +20,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.authentication.logout.HeaderWriterLogoutHandler;
+import org.springframework.security.web.header.writers.ClearSiteDataHeaderWriter;
+import org.springframework.security.web.header.writers.ClearSiteDataHeaderWriter.Directive;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -31,6 +34,7 @@ import com.thing.services.CustomerUserDetailService;
 @Configuration
 @EnableWebSecurity
 public class SercurityConfig {
+	HeaderWriterLogoutHandler clearHandler = new HeaderWriterLogoutHandler(new ClearSiteDataHeaderWriter(Directive.COOKIES));
 	@Bean
 	public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
 			throws Exception {
@@ -73,7 +77,7 @@ public class SercurityConfig {
 
 						.usernameParameter("username").defaultSuccessUrl("/home").permitAll()
 
-				);
+				).logout((logout) -> logout.logoutSuccessUrl("/home").permitAll().addLogoutHandler(clearHandler));
 
 		return http.build();
 	}
