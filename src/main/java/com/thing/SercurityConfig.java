@@ -29,18 +29,14 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 
 import com.thing.models.CustomUserDetails;
 import com.thing.services.CustomAccessDeniedHandler;
+import com.thing.services.CustomAuthenticateFailureHandler;
 import com.thing.services.CustomerUserDetailService;
 
 @Configuration
 @EnableWebSecurity
 public class SercurityConfig {
 	HeaderWriterLogoutHandler clearHandler = new HeaderWriterLogoutHandler(new ClearSiteDataHeaderWriter(Directive.COOKIES));
-	@Bean
-	public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
-			throws Exception {
-		return authenticationConfiguration.getAuthenticationManager();
-	}
-
+	
 	@Bean
 	AccessDeniedHandler cusAccessDeniedHandler() {
 		return new CustomAccessDeniedHandler();
@@ -76,7 +72,7 @@ public class SercurityConfig {
 				.formLogin(formLogin -> formLogin.loginPage("/account/signin")
 
 						.usernameParameter("username").defaultSuccessUrl("/home").permitAll()
-
+						.failureHandler(new CustomAuthenticateFailureHandler())
 				).logout((logout) -> logout.logoutSuccessUrl("/home").permitAll().addLogoutHandler(clearHandler));
 
 		return http.build();

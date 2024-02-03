@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -40,15 +41,15 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class UserController {
 	private UserService userService;
 	private PasswordEncoder passwordEncoder;
-	private AuthenticationManager authenticationManager;
+	@Autowired
+	private DaoAuthenticationProvider authenticationProvider;
 
 	@Autowired
-	public UserController(UserService userService, PasswordEncoder passwordEncoder,
-			AuthenticationManager authenticationManager) {
+	public UserController(UserService userService, PasswordEncoder passwordEncoder) {
 		super();
 		this.userService = userService;
 		this.passwordEncoder = passwordEncoder;
-		this.authenticationManager = authenticationManager;
+	
 	}
 	
 	@GetMapping("/account/register")
@@ -68,13 +69,13 @@ public class UserController {
 		return "signInUp/registerSuccessful";
 	}
 	@PostMapping("/account/signin")
-	public ResponseEntity<String> authenticateUser(User user) {
-		Authentication authentication= authenticationManager.authenticate(
-				new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword())
-				);
-		SecurityContextHolder.getContext().setAuthentication(authentication);
-		return new ResponseEntity<>("sign in success", HttpStatus.OK);
+	public String authenticateUser(User user) throws AuthenticationException {
+	    Authentication authentication = authenticationProvider.authenticate(
+		        new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword())
+		);
+	    return "redirect:/home";
 	}
+
 
 	
 
@@ -92,7 +93,7 @@ public class UserController {
 			return "redirect:/account/register-success";
 		} else {
 			redirectAttributes.addFlashAttribute("error", error);
-			return "redirect:/account/register";
+			return "redirect:/account/register?error=true";
 		}
 	}
 	@PostMapping("/account/logout")

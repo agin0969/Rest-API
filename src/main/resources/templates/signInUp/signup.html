@@ -55,24 +55,17 @@
 				<button id="btn-alert" type="button" class="btn-close" data-bs-dismiss="alert"
 					aria-label="Close" onclick="hideAlert()"></button>
 			</div>
+			<div th:if="${param.error}">
+					<p style="color: red;">Tên người dùng da duoc su dung.</p>
+				</div>
 
 
 			<button type="submit" class="btn w-100 mb-3">Sign Up</button>
 			<small class="text-body-secondary" style="color: rgb(197, 56, 10) !important" >Have an account? <a class="form-a"
 				th:href="@{/account/signin}">Click to sign in</a></small>
 
-			<div th:if="${error}"
-				class="alert alert-warning alert-dismissible fade show" role="alert">
-				<p th:text="${error}"></p>
-				<button type="button" class="btn-close" data-bs-dismiss="alert"
-					aria-label="Close"></button>
-			</div>
-			<div th:if="${error1}"
-				class="alert alert-warning alert-dismissible fade show" role="alert">
-				<p th:text="${error1}"></p>
-				<button type="button" class="btn-close" data-bs-dismiss="alert"
-					aria-label="Close"></button>
-			</div>
+			
+			
 
 		</form>
 	</div>
