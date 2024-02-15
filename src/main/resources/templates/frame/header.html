@@ -31,19 +31,21 @@
 						th:src="@{/images/imageHVMM-removebg-preview.png}" alt="mdo"
 						width="32" height="32" class="rounded-circle">
 					</a>
-					
-						<ul class="dropdown-menu text-small ul-user "
-							style="position: absolute; inset: 0px 0px auto auto; margin: 0px; transform: translate3d(0px, 34.4px, 0px);"
-							data-popper-placement="bottom-end">
-							<li><a class="dropdown-item" href="#" th:text="${users.username}"></a></li>
-							<li><a class="dropdown-item" href="#">Settings</a></li>
-							<li><a class="dropdown-item" href="#">Profile</a></li>
-							<li><hr class="dropdown-divider"></li>
-							<li><form th:action="@{/account/logout}" method="post" >
-									<button class="dropdown-item logout-btn" type="submit">log out</button>
-								</form></li>
-						</ul>
-					
+
+					<ul class="dropdown-menu text-small ul-user "
+						style="position: absolute; inset: 0px 0px auto auto; margin: 0px; transform: translate3d(0px, 34.4px, 0px);"
+						data-popper-placement="bottom-end">
+						<li><a class="dropdown-item" href="#"
+							th:text="${users.username}"></a></li>
+						<li><a class="dropdown-item" href="#">Settings</a></li>
+						<li><a class="dropdown-item" href="#">Profile</a></li>
+						<li><hr class="dropdown-divider"></li>
+						<li><form th:action="@{/account/logout}" method="post">
+								<button class="dropdown-item logout-btn" type="submit">log
+									out</button>
+							</form></li>
+					</ul>
+
 
 				</div>
 			</div>

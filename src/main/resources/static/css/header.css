@@ -1,14 +1,23 @@
 .navbar {
-	background-color: #1d1d1d !important;
+	background-color:#f4f4f4!important;
+}
+.brand-text{
+	font-weight: 800 !important;
+	margin-left: 8px;
+	font-size: 32px;
 }
 
 .navbar a {
-	color: #e7e7e7 ;
-	font-weight: bold;
+	color: #2d2d2d;
+	font-weight: 400;
 }
 
 .navbar ul li a:hover {
 	color: #da480a !important;
+}
+.navbar ul li a {
+	
+	background-color: #f4f4f4 !important
 }
 
 .navbar ul li {
@@ -27,11 +36,7 @@
 	color: #f2f2f2;
 }
 
-.signin-btn {
-	position: absolute;
-	top: 10px;
-	right: 100px;
-}
+
 
 .container-fluid {
 	position: relative;
@@ -43,24 +48,15 @@
 	cursor: pointer;
 }
 
-.brand-text {
-	font-size: 32px;
-	margin-left: 8px;
-}
 
 .logo-header {
 	display: flex;
 	align-items: center;
 }
 
-.btn-user {
-	background-color:  #1d1d1d;
-	position: absolute;
-	right: 80px;
-	top: 10px;
-}
+
 .btn-user ul {
-	background-color:  #1d1d1d !important;
+	background-color:  #ffffff!important;
 	
 }
 .btn-user li a {
@@ -68,13 +64,13 @@
 	font-weight: normal;
 }
 .btn-user li a:hover {
-	background-color: #41453f;
+	background-color:white;
 }
 .logout-btn {
- 	color: #e7e7e7;
+ 	color: #2d2d2d;
 }
 .logout-btn:hover {
 	color: #da480a;
- 	background-color: #41453f;
+ 	background-color:white;
 }
 

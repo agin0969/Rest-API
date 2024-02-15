@@ -15,12 +15,17 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.FormLoginBeanDefinitionParser;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.authentication.RememberMeServices;
 import org.springframework.security.web.authentication.logout.HeaderWriterLogoutHandler;
+import org.springframework.security.web.authentication.rememberme.RememberMeAuthenticationFilter;
+import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices;
+import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices.RememberMeTokenAlgorithm;
 import org.springframework.security.web.header.writers.ClearSiteDataHeaderWriter;
 import org.springframework.security.web.header.writers.ClearSiteDataHeaderWriter.Directive;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -32,11 +37,24 @@ import com.thing.services.CustomAccessDeniedHandler;
 import com.thing.services.CustomAuthenticateFailureHandler;
 import com.thing.services.CustomerUserDetailService;
 
+import jakarta.websocket.Session;
+
 @Configuration
 @EnableWebSecurity
 public class SercurityConfig {
-	HeaderWriterLogoutHandler clearHandler = new HeaderWriterLogoutHandler(new ClearSiteDataHeaderWriter(Directive.COOKIES));
-	
+	HeaderWriterLogoutHandler clearHandler = new HeaderWriterLogoutHandler(
+			new ClearSiteDataHeaderWriter(Directive.COOKIES));
+
+	@Bean
+	TokenBasedRememberMeServices rememberMeServices() {
+		RememberMeTokenAlgorithm encodingAlgorithm = RememberMeTokenAlgorithm.SHA256;
+		TokenBasedRememberMeServices rememberMe = new TokenBasedRememberMeServices("thing", userDetailsService(),
+				encodingAlgorithm);
+		rememberMe.setTokenValiditySeconds(60000);
+		rememberMe.setMatchingAlgorithm(RememberMeTokenAlgorithm.MD5);
+		return rememberMe;
+	}
+
 	@Bean
 	AccessDeniedHandler cusAccessDeniedHandler() {
 		return new CustomAccessDeniedHandler();
@@ -65,15 +83,18 @@ public class SercurityConfig {
 	@Bean
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.authenticationProvider(authenticationProvider());
-		http.authorizeHttpRequests(
-				auth -> auth.requestMatchers("/home", "/account/**").permitAll().requestMatchers("/resources/**")
-						.permitAll().requestMatchers("/admin/api").hasAuthority("ADMIN").anyRequest().permitAll())
+		http.authorizeHttpRequests(auth -> auth.requestMatchers("/account/**").permitAll()
+				.requestMatchers("/resources/**").permitAll().requestMatchers("/home").permitAll()
+				.requestMatchers("/admin/api").hasAuthority("ADMIN").anyRequest().permitAll())
 				.exceptionHandling(customizer -> customizer.accessDeniedHandler(cusAccessDeniedHandler()))
 				.formLogin(formLogin -> formLogin.loginPage("/account/signin")
 
 						.usernameParameter("username").defaultSuccessUrl("/home").permitAll()
 						.failureHandler(new CustomAuthenticateFailureHandler())
-				).logout((logout) -> logout.logoutSuccessUrl("/home").permitAll().addLogoutHandler(clearHandler));
+
+				).rememberMe((remember) -> remember.rememberMeServices(rememberMeServices()).key("thing"))
+				.logout((logout) -> logout.logoutSuccessUrl("/home").permitAll().addLogoutHandler(clearHandler))
+				.sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.ALWAYS));
 
 		return http.build();
 	}

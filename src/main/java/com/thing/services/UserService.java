@@ -1,6 +1,7 @@
 package com.thing.services;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import javax.naming.NameNotFoundException;
@@ -20,6 +21,9 @@ public class UserService {
 	@Autowired
 	private  UserRepository userRepository;
 	
+	public <T> T getOrElseThrow(Optional<T> optional, String messString) {
+		return optional.orElseThrow(()-> new NoSuchElementException(messString));
+	}
 	
 	public UserService(UserRepository userRepository) {
 		this.userRepository=userRepository;
@@ -29,15 +33,14 @@ public class UserService {
 		
 	}
 	public Optional<User> getUserById(int id) {
-		Optional<User> usOptional =userRepository.findById(id);
-		return usOptional ;
+		 return userRepository.findById(id);
+		
 		
 	}
-	
-	public User getUserByUsername(String username){
-		User finduser=userRepository.findByUsername(username);
-		return finduser;
+	public User getUserByUsername(String username) {
+		return userRepository.findByUsername(username);
 	}
+	
 	public User saveUser(User user) {
 		return userRepository.save(user);
 	}

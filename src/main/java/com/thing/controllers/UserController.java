@@ -43,6 +43,7 @@ public class UserController {
 	private PasswordEncoder passwordEncoder;
 	@Autowired
 	private DaoAuthenticationProvider authenticationProvider;
+	private SecurityContextLogoutHandler securityContextLogoutHandler;
 
 	@Autowired
 	public UserController(UserService userService, PasswordEncoder passwordEncoder) {
@@ -81,24 +82,23 @@ public class UserController {
 
 	@PostMapping("/account/process_register")
 	public String signUp( User user, RedirectAttributes redirectAttributes) {
-		String error = "tai khoan da co nguoi su dung";
-		String error1 = "dang ki thanh cong";
+		
 		String username = user.getUsername();
 		String password = user.getPassword();
-		if (userService.getUserByUsername(user.getUsername()) == null && username != "" && password != "") {
+		User optional= userService.getUserByUsername(username);
+		if (optional==null && username != "" && password != "") {
 			user.setPassword(passwordEncoder.encode(password));
 			userService.saveUser(user);
-			redirectAttributes.addFlashAttribute("error1", error1);
 			
 			return "redirect:/account/register-success";
 		} else {
-			redirectAttributes.addFlashAttribute("error", error);
+			
 			return "redirect:/account/register?error=true";
 		}
 	}
 	@PostMapping("/account/logout")
 	public String logOut(Authentication authentication, HttpServletRequest request, HttpServletResponse response) {
 		new SecurityContextLogoutHandler().logout(request, response, authentication);
-		return "index";
+		return "redirect:/home";
 	}
 }
